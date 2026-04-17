@@ -7,7 +7,7 @@ export default function UpdatePage() {
   const navigate = useNavigate();
   const URL = import.meta.env.VITE_SUPABASE_URL;
   const APIKEY = import.meta.env.VITE_SUPABASE_APIKEY;
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState(null);
 
   useEffect(() => {
     async function loadProduct() {
@@ -35,6 +35,15 @@ export default function UpdatePage() {
     });
     navigate(`/products/${id}`);
   }
+
+    if (!product) {
+      return (
+        <main>
+          <h1 className="page-title">Product details</h1>
+          <p className="status-msg">Loading product...</p>
+        </main>
+      );
+    }
 
   return (
     <main className="app">

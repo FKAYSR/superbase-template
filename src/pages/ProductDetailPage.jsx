@@ -1,17 +1,27 @@
 import { useParams, useNavigate, Link } from "react-router";
+import { useEffect, useState } from "react";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const product = {
-    id,
-    title: "Starter Product",
-    price: 0,
-    image: "",
-  };
 
   const URL = import.meta.env.VITE_SUPABASE_URL;
   const APIKEY = import.meta.env.VITE_SUPABASE_APIKEY;
+
+   const [product, setProducts] = useState(null);
+    useEffect(() => {
+      async function loadProdukter() {
+        const response = await fetch(`${URL}?id=eq.${id}`, {
+          headers: {
+            apikey: APIKEY,
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        setProducts(data[0] || null);
+      }
+      loadProdukter();
+    }, [id, URL, APIKEY]);
 
   async function handleDelete() {
     const confirmed = window.confirm("Delete this product?");
@@ -27,13 +37,19 @@ export default function ProductDetailPage() {
     navigate("/");
   }
 
+  if (!product) {
+    return (
+      <main>
+        <h1 className="page-title">Product details</h1>
+        <p className="status-msg">Loading product...</p>
+      </main>
+    );
+  }
+
   return (
     <main className="app">
       <h1 className="page-title">Product Details</h1>
-      <p className="status-msg">
-        TODO (Trin 5): Implementer GET af product details med fetch.
-      </p>
-
+      
       <article className="product-detail">
         {product.image ? (
           <img src={product.image} alt={product.title} />
