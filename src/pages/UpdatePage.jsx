@@ -19,7 +19,7 @@ export default function UpdatePage() {
       method: "PATCH",
       headers: {
         apikey: APIKEY,
-        "Content-Type": "applicaion/JSON"
+        "Content-Type": "applicaion/json"
       },
       body: JSON.stringify(productData)
     });

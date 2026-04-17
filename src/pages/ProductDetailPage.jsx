@@ -10,12 +10,21 @@ export default function ProductDetailPage() {
     image: "",
   };
 
+  const URL = import.meta.env.VITE_SUPABASE_URL;
+  const APIKEY = import.meta.env.VITE_SUPABASE_APIKEY;
+
   async function handleDelete() {
     const confirmed = window.confirm("Delete this product?");
-    if (confirmed) {
-      // TODO (Trin 5): Implementer DELETE med fetch til `${URL}?id=eq.${id}`.
-      navigate("/");
-    }
+    if (!confirmed) return;
+
+      await fetch(`${URL}?id=eq.${id}`, {
+        method: "DELETE",
+        headers: {
+          apikey: APIKEY,
+          "Content-Type": "application/json"
+      },
+    });
+    navigate("/");
   }
 
   return (
