@@ -19,9 +19,10 @@ export default function HomePage() {
     }
     loadProdukter();
   }, []);
+  
   return (
     <main className="app">
-      <h1 className="page-title">All Products</h1>     {" "}
+      <h1 className="page-title">All Products</h1>
       <section className="product-list">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />

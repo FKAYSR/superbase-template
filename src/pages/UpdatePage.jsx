@@ -1,17 +1,27 @@
 import { useParams, useNavigate } from "react-router";
 import ProductForm from "../components/ProductForm";
+import { useEffect, useState } from "react";
 
 export default function UpdatePage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const product = {
-    id,
-    title: "Starter Product",
-    price: 0,
-    image: "",
-  };
   const URL = import.meta.env.VITE_SUPABASE_URL;
   const APIKEY = import.meta.env.VITE_SUPABASE_APIKEY;
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    async function loadProduct() {
+      const response = await fetch(`${URL}?id=eq.${id}`, {
+        headers: {
+        apikey: APIKEY,
+        "Content-Type": "application/json"
+      }
+    });
+      const data = await response.json();
+      setProduct(data[0] || null);
+      }
+      loadProduct();
+    }, [id, URL, APIKEY]);
 
   async function handleSubmit(productData) {
     console.log("UpdatePage productData:", productData);
@@ -19,12 +29,21 @@ export default function UpdatePage() {
       method: "PATCH",
       headers: {
         apikey: APIKEY,
-        "Content-Type": "applicaion/json"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(productData)
     });
     navigate(`/products/${id}`);
   }
+
+    if (!product) {
+      return (
+        <main>
+          <h1 className="page-title">Product details</h1>
+          <p className="status-msg">Loading product...</p>
+        </main>
+      );
+    }
 
   return (
     <main className="app">
