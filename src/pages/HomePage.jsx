@@ -1,15 +1,6 @@
 import ProductCard from "../components/ProductCard";
 import { useEffect, useState } from "react";
 
-const starterProducts = [
-  {
-    id: "starter-1",
-    title: "Starter Product",
-    price: 0,
-    image: "",
-  },
-];
-
 const URL = import.meta.env.VITE_SUPABASE_URL;
 const APIKEY = import.meta.env.VITE_SUPABASE_APIKEY;
 
